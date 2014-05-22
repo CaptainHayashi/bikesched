@@ -4,11 +4,11 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require './version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "."
-  spec.version       = .::VERSION
+  spec.name          = "bikesched"
+  spec.version       = Bikesched::VERSION
   spec.authors       = ["mattbw"]
   spec.email         = ["matt.windsor@ury.york.ac.uk"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
+  spec.summary       = %q{Simple interface to the URY schedule}
   spec.description   = %q{TODO: Write a longer description. Optional.}
   spec.homepage      = ""
   spec.license       = "MIT"
