@@ -11,11 +11,11 @@ module Bikesched
   show_ids = shows.map { |show| show[:show_id] }
   show_names = sd.show_names(show_ids, Time.now)
 
-  $, = ':'
-  $\ = "\n"
+  $OFS = ':'
+  $ORS = "\n"
 
   def self.escape(string)
-    string.gsub(/([#{$,}#{$\}])/, '\\\\\1')
+    string.gsub(/([#{$OFS}#{$ORS}])/, '\\\\\1')
   end
 
   shows.each do |show|

@@ -31,9 +31,9 @@ module Bikesched
       @db[TIMESLOT].join(SEASON, [:show_season_id])
                    .join(SHOW, [:show_id])
                    .select_append { (start_time + duration).as(end_time) }
+                   .order_by      { start_time.asc }
                    .where         { start_time + duration >= from }
                    .and           { start_time < to }
-                   .order_by      { start_time.asc }
     end
 
     # Returns the names of the shows whose ids are in 'ids' at 'time'
@@ -41,10 +41,10 @@ module Bikesched
       @db[SHOW_TMD].select(:show_id, :metadata_value)
                    .distinct(:show_id)
                    .join(META_KEYS, [:metadata_key_id])
+                   .order_by(:show_id, Sequel.desc(:effective_to))
                    .where(show_id: ids, name: 'title')
                    .and      { effective_from <= time }
                    .and      { (effective_to.nil?) | (effective_to > time) }
-                   .order_by(:show_id, Sequel.desc(:effective_to))
                    .to_hash(:show_id, :metadata_value)
     end
   end
