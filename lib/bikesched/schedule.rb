@@ -51,9 +51,9 @@ module Bikesched
 
     { second: 1,
       minute: 60,
-      hour: 60 * 60,
-      day: 60 * 60 * 24,
-      week: 60 * 60 * 24 * 7
+      hour:   60 * 60,
+      day:    60 * 60 * 24,
+      week:   60 * 60 * 24 * 7
     }.each do |name, in_seconds|
       define_method(name) { @schedule_from.for_seconds(@duration * in_seconds) }
       alias_method "#{name}s".to_sym, name
