@@ -1,5 +1,8 @@
-require "bikesched/version"
+require 'bikesched/version'
+require 'sequel'
 
 module Bikesched
-  # Your code goes here...
+  dbpasswd = IO.read('dbpasswd').chomp
+
+  DB = Sequel.connect(dbpasswd)
 end
