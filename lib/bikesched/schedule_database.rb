@@ -1,34 +1,42 @@
 require 'sequel'
 
 module Bikesched
+  # An object providing a connection to the URY schedule database
   class ScheduleDatabase
+    # Schedule tables
     SHOW     = Sequel.qualify(:schedule, :show)
     SEASON   = Sequel.qualify(:schedule, :show_season)
     TIMESLOT = Sequel.qualify(:schedule, :show_season_timeslot)
 
+    # Metadata tables
     SHOW_TMD     = Sequel.qualify(:schedule, :show_metadata)
     SEASON_TMD   = Sequel.qualify(:schedule, :show_season_metadata)
     TIMESLOT_TMD = Sequel.qualify(:schedule, :show_season_timeslot_metadata)
 
     META_KEYS    = Sequel.qualify(:metadata, :metadata_key)
 
+    # Constructs a new ScheduleDatabase
     def initialize(db)
       @db = db
     end
 
+    # Constructs a ScheduleDatabase from a local 'dbpasswd' file
     def self.from_dbpasswd
       dbpasswd = IO.read('dbpasswd').chomp
       ScheduleDatabase.new(Sequel.connect(dbpasswd))
     end
 
+    # Fetches all information about the timeslots between from and to
     def range(from, to)
       @db[TIMESLOT].join(SEASON, [:show_season_id])
                    .join(SHOW, [:show_id])
-                   .where    { start_time + duration >= from }
-                   .and      { start_time < to }
-                   .order_by { start_time.asc }
+                   .select_append { (start_time + duration).as(end_time) }
+                   .where         { start_time + duration >= from }
+                   .and           { start_time < to }
+                   .order_by      { start_time.asc }
     end
 
+    # Returns the names of the shows whose ids are in 'ids' at 'time'
     def show_names(ids, time)
       @db[SHOW_TMD].select(:show_id, :metadata_value)
                    .distinct(:show_id)
@@ -37,6 +45,7 @@ module Bikesched
                    .and      { effective_from <= time }
                    .and      { (effective_to.nil?) | (effective_to > time) }
                    .order_by(:show_id, Sequel.desc(:effective_to))
+                   .to_hash(:show_id, :metadata_value)
     end
   end
 end
