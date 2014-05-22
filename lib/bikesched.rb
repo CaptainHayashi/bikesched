@@ -1,4 +1,5 @@
 require 'bikesched/version'
+require 'bikesched/schedule'
 require 'bikesched/schedule_database'
 
 require 'time'
@@ -6,10 +7,9 @@ require 'English'
 
 module Bikesched
   sd = ScheduleDatabase.from_dbpasswd
+  schedule = Schedule.new(sd)
 
-  shows = sd.range(Time.now, Time.now + (60 * 60 * 24)).all
-  show_ids = shows.map { |show| show[:show_id] }
-  show_names = sd.show_names(show_ids, Time.now)
+  shows = schedule.time_range(Time.now, Time.now + (60 * 60 * 24))
 
   $OFS = ':'
   $ORS = "\n"
@@ -24,6 +24,6 @@ module Bikesched
           show[:show_season_timeslot_id],
           show[:start_time].to_i,
           show[:end_time].to_i,
-          escape(show_names[show[:show_id]]))
+          escape(show[:show_name]))
   end
 end
