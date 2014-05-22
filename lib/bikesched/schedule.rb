@@ -20,7 +20,7 @@ module Bikesched
     end
 
     def from(time)
-      return ScheduleFrom.new(self, time)
+      ScheduleFrom.new(self, time)
     end
   end
 
@@ -39,7 +39,7 @@ module Bikesched
     end
 
     def for(duration)
-      return ScheduleFor.new(self, duration)
+      ScheduleFor.new(self, duration)
     end
   end
 
