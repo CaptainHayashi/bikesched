@@ -6,10 +6,12 @@ require 'time'
 require 'English'
 
 module Bikesched
-  sd = ScheduleDatabase.from_dbpasswd
-  schedule = Schedule.new(sd)
+  def self.database_schedule
+    sd = ScheduleDatabase.from_dbpasswd
+    Schedule.new(sd)
+  end
 
-  shows = schedule.from(Time.now).for(1).day
+  shows = self.database_schedule.from(Time.now).for(1).week
 
   $OFS = ':'
   $ORS = "\n"
