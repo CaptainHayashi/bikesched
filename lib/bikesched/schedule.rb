@@ -9,8 +9,8 @@ module Bikesched
     end
 
     # Finds the schedule slice between two Times
-    def time_range(start_time, end_time)
-      timeslots = @source.range(start_time, end_time).all
+    def time_range(from_time, to_time)
+      timeslots = @source.range(from_time, to_time).all
       show_ids = timeslots.map { |show| show[:show_id] }
       show_names = @source.show_names(show_ids, Time.now)
 
@@ -18,5 +18,55 @@ module Bikesched
         show.merge(show_name: show_names[show[:show_id]])
       end
     end
+
+    def from(time)
+      return ScheduleFrom.new(self, time)
+    end
+  end
+
+  class ScheduleFrom
+    def initialize(schedule, from_time)
+      @schedule  = schedule
+      @from_time = from_time
+    end
+
+    def to(to_time)
+      @schedule.time_range(@from_time, to_time)
+    end
+
+    def for_seconds(duration)
+      to(@from_time + duration)
+    end
+
+    def for(duration)
+      return ScheduleFor.new(self, duration)
+    end
+  end
+
+  class ScheduleFor
+    def initialize(schedule_from, duration)
+      @schedule_from = schedule_from
+      @duration      = duration
+    end
+
+    def seconds
+      @schedule_from.for_seconds(@duration)
+    end
+    alias_method :second, :seconds
+
+    def minutes
+      @schedule_from.for_seconds(@duration * 60)
+    end
+    alias_method :minute, :minutes
+
+    def hours
+      @schedule_from.for_seconds(@duration * 60 * 60)
+    end
+    alias_method :hour, :hours
+
+    def days
+      @schedule_from.for_seconds(@duration * 60 * 60 * 24)
+    end
+    alias_method :day, :days
   end
 end

@@ -9,7 +9,7 @@ module Bikesched
   sd = ScheduleDatabase.from_dbpasswd
   schedule = Schedule.new(sd)
 
-  shows = schedule.time_range(Time.now, Time.now + (60 * 60 * 24))
+  shows = schedule.from(Time.now).for(1).day
 
   $OFS = ':'
   $ORS = "\n"
