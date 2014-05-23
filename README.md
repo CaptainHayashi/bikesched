@@ -22,6 +22,10 @@ Bikesched is intended to be usable both as a Ruby gem and as a command-line
 interface to the URY schedule.  Results from the latter are intended to be
 processed by pipelines as per the Unix philosophy.
 
+The command-line tools are:
+
+* `bikesched-slice <from> <to>` Outputs the timeslots between two UNIX timestamps.
+
 ### Next 24 hours of URY shows (FreeBSD)
 
 **Note**: The following example uses FreeBSD-specific `date` features.
