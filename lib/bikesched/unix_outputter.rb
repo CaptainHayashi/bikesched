@@ -1,3 +1,5 @@
+require 'English'
+
 module Bikesched
   class UnixOutputter
     def initialize(handle=nil, record_separator=nil, field_separator=nil)
@@ -22,7 +24,7 @@ module Bikesched
     end
 
     def escape(string)
-      string.gsub(/([#{$OFS}#{$ORS}])/, '\\\\\1')
+      string.gsub(/([#{$OFS}\\])/, '\\\\\1').gsub(/#{$ORS}/, '\\\\n')
     end
 
     def schedule_entry(show)
