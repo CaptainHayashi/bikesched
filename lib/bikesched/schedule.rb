@@ -10,6 +10,7 @@ module Bikesched
 
     # Finds the schedule slice between two Times
     def time_range(from_time, to_time)
+      fail('To time before from time.') if to_time < from_time
       @source.range(from_time, to_time)
     end
 
@@ -25,6 +26,7 @@ module Bikesched
     end
 
     def to(to_time)
+      fail('To time before from time.') if to_time < @from_time
       @schedule.time_range(@from_time, to_time)
     end
 
@@ -33,6 +35,7 @@ module Bikesched
     end
 
     def for(duration)
+      fail('Negative duration.') if duration < 0
       ScheduleFor.new(self, duration)
     end
   end

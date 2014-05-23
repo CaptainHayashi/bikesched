@@ -17,13 +17,22 @@ RSpec.describe Bikesched::Schedule do
 
   describe '#time_range' do
     context 'with two Times' do
-      context 'with the end time after the start time' do
+      subject { sched.time_range(from, to) }
+
+      context 'with the to time after the from time' do
         let(:to) { from + (60 * 60 * 24) }
 
         it 'calls #range on the database with the given times' do
           allow(source).to receive(:range)
-          subject.time_range(from, to)
+          subject
           expect(source).to have_received(:range).once.with(from, to)
+        end
+      end
+
+      context 'with the to time before the from time' do
+        let(:to) { from - (60 * 60 * 24) }
+        specify do
+          expect { subject }.to raise_error 'To time before from time.'
         end
       end
     end
@@ -55,7 +64,7 @@ RSpec.describe Bikesched::ScheduleFrom do
       it 'fails with an error without calling #time_range' do
         allow(sched).to receive(:time_range)
         expect(sched).to_not receive :time_range
-        expect { subject }.to raise_error 'End time before start time.'
+        expect { subject }.to raise_error 'To time before from time.'
       end
     end
   end
@@ -70,7 +79,7 @@ RSpec.describe Bikesched::ScheduleFrom do
 
     context 'with a negative integer' do
       let(:duration) { -60 * 60 * 24 }
-      specify { expect { subject }.to raise_error 'Duration negative.' }
+      specify { expect { subject }.to raise_error 'Negative duration.' }
     end
   end
 end
