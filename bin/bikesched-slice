@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require 'bikesched'
+
+from = Time.at(ARGV[0].to_i)
+to   = Time.at(ARGV[1].to_i)
+
+Bikesched::UnixOutputter.new.output_schedule_slice(
+  Bikesched.schedule.from(from).to(to)
+)
