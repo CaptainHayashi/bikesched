@@ -28,6 +28,16 @@ module Bikesched
 
     # Fetches all information about the timeslots between from and to
     def range(from, to)
+      timeslots  = raw_range(from, to).all
+      show_ids   = timeslots.map { |show| show[:show_id] }
+      show_names = show_names(show_ids, Time.now)
+
+      timeslots.map do |show|
+        show.merge(show_name: show_names[show[:show_id]])
+      end
+    end
+
+    def raw_range(from, to)
       @db[TIMESLOT].join(SEASON, [:show_season_id])
                    .join(SHOW, [:show_id])
                    .select_append { (start_time + duration).as(end_time) }

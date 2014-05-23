@@ -10,13 +10,7 @@ module Bikesched
 
     # Finds the schedule slice between two Times
     def time_range(from_time, to_time)
-      timeslots = @source.range(from_time, to_time).all
-      show_ids = timeslots.map { |show| show[:show_id] }
-      show_names = @source.show_names(show_ids, Time.now)
-
-      timeslots.map do |show|
-        show.merge(show_name: show_names[show[:show_id]])
-      end
+      @source.range(from_time, to_time)
     end
 
     def from(time)
