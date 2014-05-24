@@ -2,6 +2,11 @@
 
 **Bikesched** is a wrapper around the URY schedule database.
 
+It is intended to be implemented as a *gateway* gem, which abstracts over the actual source of
+schedule information (database, API, etc), and a series of pipelines and filters that massage the
+gateway's output into usable formats.  The goal is composability, modularity and non-obsolescence,
+not performance.
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -25,8 +30,17 @@ processed by pipelines as per the Unix philosophy.
 The command-line tools are:
 
 * `bikesched-slice <from> <to>` Outputs the timeslots between two UNIX timestamps.
+* `fill-slice [jukebox-name]` Fills gaps in the output of `bikesched-slice` with Jukebox timeslots.
+* `pretty-slice` Pretty-prints a slice for human consumption.
 
-### Next 24 hours of URY shows (FreeBSD)
+There are also some shell scripts in the `script` directory that implement
+various useful pipeline combinations of the tools:
+
+* `today` Outputs the schedule for today (starting at 7am).
+
+### Examples
+
+#### Next 24 hours of URY shows (FreeBSD)
 
 **Note**: The following example uses FreeBSD-specific `date` features.
 One may have to change the `date`s significantly for GNU/Linux.
@@ -50,3 +64,18 @@ $ bin/bikesched-slice `date +%s` `date -v+1d +%s`
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+## Q&A
+
+### Why is it called bikesched?
+
+It's a reference to the term 'bikeshedding', which refers to the act of spending a disproportionate
+amount of attention on settling trivial arguments (as in, debating the colour a bike-shed should be
+instead of actually getting on with building it).
+
+This gem is, itself, a bit of a bikeshed job.  The author realises that URY has more important things
+to do than decide how the schedule should be accessed =P
+
+### Why?
+
+Why not?
