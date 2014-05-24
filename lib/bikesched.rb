@@ -1,3 +1,4 @@
+require 'bikesched/filler'
 require 'bikesched/unix_outputter'
 require 'bikesched/version'
 require 'bikesched/schedule'
@@ -10,5 +11,9 @@ module Bikesched
   def self.schedule
     sd = ScheduleDatabase.from_dbpasswd
     Schedule.new(sd)
+  end
+
+  def self.filler(*args)
+    Filler.new(*args)
   end
 end
