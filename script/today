@@ -1,23 +1,10 @@
 #!/bin/sh
 
-START_HOUR=7
 JUKEBOX_NAME="URY Jukebox"
-
-if [ `uname` = 'FreeBSD' ]
-then
-	start=`date -v${START_HOUR}H -v0M -v0S +%s`
-	finish=`date -v${START_HOUR}H -v0M -v0S -v+1d +%s`
-else
-	# Assume we have GNU date
-	start=`date --date "${START_HOUR} today" +%s`
-	finish=`date --date "${START_HOUR} tomorrow" +%s`
-fi
 
 today=`date +%x`
 
 echo "Schedule for ${today}"
 echo
 
-bin/bikesched-slice "${start}" "${finish}" |
-bin/fill-slice "${JUKEBOX_NAME}" |
-bin/pretty-slice
+script/today-raw | bin/fill-slice "${JUKEBOX_NAME}" | bin/pretty-slice
