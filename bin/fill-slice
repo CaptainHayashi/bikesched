@@ -2,22 +2,19 @@
 
 require 'English'
 require 'time'
+require 'bikesched'
 
-$FS = "\t"
-$RS = "\n"
+$FS = $OFS = "\t"
+$RS = $ORS = "\n"
 
 jukebox_name = ARGV.fetch(0, 'Jukebox')
 
-last_finish = nil
+conf = {
+  fill_proc:   ->(start, finish) { ['', '', '', start, finish, jukebox_name] },
+  start_proc:  ->(timeslot)      { timeslot[3] },
+  finish_proc: ->(timeslot)      { timeslot[4] }
+}
 
-$stdin.each_line do |record|
-  _, _, _, start_ts, finish_ts, *_ = record.chomp.split
+input = $stdin.each_line.lazy.map { |line| line.chomp.split }
 
-  unless last_finish.nil? || start_ts == last_finish
-    puts [ '', '', '', last_finish, start_ts, jukebox_name
-         ].join("\t")
-  end
-  last_finish = finish_ts
-
-  puts record
-end
+Bikesched::Filler.new(conf).fill(input) { |record| puts record.join($OFS) }
