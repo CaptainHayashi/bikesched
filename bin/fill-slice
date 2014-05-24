@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+require 'English'
+require 'time'
+
+$FS = "\t"
+$RS = "\n"
+
+jukebox_name = ARGV.fetch(0, 'Jukebox')
+
+last_finish = nil
+
+$stdin.each_line do |record|
+  _, _, _, start_ts, finish_ts, *_ = record.chomp.split
+
+  unless last_finish.nil? || start_ts == last_finish
+    puts [ '', '', '', last_finish, start_ts, jukebox_name
+         ].join("\t")
+  end
+  last_finish = finish_ts
+
+  puts record
+end
