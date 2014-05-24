@@ -5,7 +5,7 @@ module Bikesched
     def initialize(handle=nil, record_separator=nil, field_separator=nil)
       @handle           = handle           || $stdout
       @record_separator = record_separator || "\n"
-      @field_separator  = field_separator  || ':'
+      @field_separator  = field_separator  || "\t"
     end
 
     def output_schedule_slice(shows)
@@ -24,7 +24,9 @@ module Bikesched
     end
 
     def escape(string)
-      string.gsub(/([#{$OFS}\\])/, '\\\\\1').gsub(/#{$ORS}/, '\\\\n')
+      string.gsub('\\', '\\\\\\\\')
+            .gsub($OFS, '\\\\t')
+	    .gsub($ORS, '\\\\n')
     end
 
     def schedule_entry(show)

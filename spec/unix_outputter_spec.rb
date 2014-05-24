@@ -11,7 +11,7 @@ RSpec.describe Bikesched::UnixOutputter do
           show_season_timeslot_id: 1010101,
           start_time:              Time.parse('2010-01-01 13:50:00 +0000'),
           end_time:                Time.parse('2010-01-01 15:50:00 +0000'),
-          show_name:               "URY:PM: \\Backslash\\ \nNewline \\n"
+          show_name:               "URY:PM:\t \\Backslash\\ \nNewline \\n"
         }
       ]
     end
@@ -28,8 +28,8 @@ RSpec.describe Bikesched::UnixOutputter do
             "1010101",
             slice[0][:start_time].to_i,
             slice[0][:end_time].to_i,
-            'URY\:PM\: \\\\Backslash\\\\ \nNewline \\\\n'
-          ].join(':') + "\n"
+            'URY:PM:\t \\\\Backslash\\\\ \nNewline \\\\n'
+          ].join("\t") + "\n"
         )
       end
     end
