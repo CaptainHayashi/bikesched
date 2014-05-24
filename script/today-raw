@@ -12,4 +12,4 @@ else
 	finish=`date --date "${START_HOUR} tomorrow" +%s`
 fi
 
-bin/bikesched-slice "${start}" "${finish}"
+bin/bikesched_slice "${start}" "${finish}"

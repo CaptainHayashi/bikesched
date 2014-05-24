@@ -7,4 +7,4 @@ today=`date +%x`
 echo "Schedule for ${today}"
 echo
 
-script/today-raw | bin/fill-slice "${JUKEBOX_NAME}" | bin/pretty-slice
+script/today-raw | bin/fill_slice "${JUKEBOX_NAME}" | bin/pretty_slice
