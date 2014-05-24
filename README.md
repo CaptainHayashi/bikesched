@@ -29,9 +29,9 @@ processed by pipelines as per the Unix philosophy.
 
 The command-line tools are:
 
-* `bikesched-slice <from> <to>` Outputs the timeslots between two UNIX timestamps.
-* `fill-slice [jukebox-name]` Fills gaps in the output of `bikesched-slice` with Jukebox timeslots.
-* `pretty-slice` Pretty-prints a slice for human consumption.
+* `bikesched_slice <from> <to>` Outputs the timeslots between two UNIX timestamps.
+* `fill_slice [jukebox-name]` Fills gaps in the output of `bikesched_slice` with Jukebox timeslots.
+* `pretty_slice` Pretty-prints a slice for human consumption.
 
 There are also some shell scripts in the `script` directory that implement
 various useful pipeline combinations of the tools:
@@ -47,7 +47,7 @@ One may have to change the `date`s significantly for GNU/Linux.
 
 ```
 $ echo 'database://connection/string/goes/here' >> dbpasswd
-$ bin/bikesched-slice `date +%s` `date -v+1d +%s`
+$ bin/bikesched_slice `date +%s` `date -v+1d +%s`
 12882	21103	134543	1400860800	1400864400	MASH
 12776	21115	134203	1400868000	1400875200	URY:PM - The Teatime Trio
 12796	21100	134079	1400875200	1400882400	Circulation Magazine Show 
