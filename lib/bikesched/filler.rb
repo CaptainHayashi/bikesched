@@ -1,10 +1,11 @@
 require 'forwardable'
 
 module Bikesched
+  # An object for filling gaps in schedules
   class Filler
     extend Forwardable
 
-    def initialize(args={})
+    def initialize(args = {})
       @name         = args[:name]        || 'Jukebox'
       @fill_proc    = args[:fill_proc]   || method(:default_fill)
       @start_proc   = args[:start_proc]  || ->(show) { show[:start_time] }
@@ -37,7 +38,7 @@ module Bikesched
     end
 
     # Converts a list of slots to a lazy enumerator of slot pairs
-    # 
+    #
     # For a list of slots [a, b, c, ..., z] this will enumerate
     # [[a, b], [b, c], [c, d], ..., [z, nil]].
     def to_lazy_pairs(slots)

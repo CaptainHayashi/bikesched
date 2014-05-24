@@ -19,6 +19,7 @@ module Bikesched
     end
   end
 
+  # An object representing the 'from' part of a schedule slice request
   class ScheduleFrom
     def initialize(schedule, from_time)
       @schedule  = schedule
@@ -40,6 +41,7 @@ module Bikesched
     end
   end
 
+  # An object representing the 'for' part of a schedule slice request
   class ScheduleFor
     def initialize(schedule_from, duration)
       @schedule_from = schedule_from

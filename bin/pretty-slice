@@ -4,6 +4,7 @@ require 'term/ansicolor'
 require 'English'
 require 'time'
 
+# Monkey-patch colours into String for ease of use later on.
 class String
   include Term::ANSIColor
 end
@@ -14,7 +15,7 @@ $RS = "\n"
 last_start = nil
 
 $stdin.each_line do |record|
-  show_id, season_id, episode_id, start_ts, finish_ts, name, *_ = record.chomp.split
+  _, _, _, start_ts, finish_ts, name, *_ = record.chomp.split
 
   start  = Time.at(start_ts.to_i)
   finish = Time.at(finish_ts.to_i)
@@ -24,10 +25,10 @@ $stdin.each_line do |record|
   end
   last_start = start
 
-  print "  "
+  print '  '
   print start.strftime('%R').green.bold
-  print "-"
+  print '-'
   print finish.strftime('%R').green.bold
-  print " "
-  puts  name.red.bold
+  print ' '
+  puts name.red.bold
 end

@@ -7,6 +7,7 @@ require 'bikesched/schedule_database'
 require 'time'
 require 'English'
 
+# A gateway to the URY radio schedule
 module Bikesched
   def self.schedule
     sd = ScheduleDatabase.from_dbpasswd
