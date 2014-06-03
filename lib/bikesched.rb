@@ -9,6 +9,11 @@ require 'English'
 
 # A gateway to the URY radio schedule
 module Bikesched
+  # Outputs a schedule slice using the Unix output formatter.
+  def self.print_slice_unix(slice)
+    Bikesched::UnixOutputter.new.output_schedule_slice(slice)
+  end
+
   def self.schedule
     sd = ScheduleDatabase.from_dbpasswd
     Schedule.new(sd)
