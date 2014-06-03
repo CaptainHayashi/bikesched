@@ -22,7 +22,7 @@ module Bikesched
 
     # Constructs a ScheduleDatabase from a local 'dbpasswd' file
     def self.from_dbpasswd
-      dbpasswd = IO.read('dbpasswd').chomp
+      dbpasswd = IO.read(ENV.fetch('DBPASSWD_LOC', 'dbpasswd')).chomp
       ScheduleDatabase.new(Sequel.connect(dbpasswd))
     end
 
@@ -41,9 +41,7 @@ module Bikesched
       show_ids   = timeslots.map { |show| show[:show_id] }
       show_names = show_names(show_ids, Time.now)
 
-      timeslots.map do |show|
-        show.merge(show_name: show_names[show[:show_id]])
-      end
+      timeslots.map { |show| show.merge(show_name: show_names[show[:show_id]]) }
     end
 
     def raw_range(from, to)
