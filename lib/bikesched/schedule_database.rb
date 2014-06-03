@@ -28,7 +28,16 @@ module Bikesched
 
     # Fetches all information about the timeslots between from and to
     def range(from, to)
-      timeslots  = raw_range(from, to).all
+      from_query(raw_range(from, to))
+    end
+
+    # Fetches all information about the 'count' timeslots from 'from'
+    def count(from, count)
+      from_query(raw_count(from, count))
+    end
+
+    def from_query(query)
+      timeslots  = query.all
       show_ids   = timeslots.map { |show| show[:show_id] }
       show_names = show_names(show_ids, Time.now)
 
@@ -38,12 +47,19 @@ module Bikesched
     end
 
     def raw_range(from, to)
+      select_slice_from(from).and { start_time < to }
+    end
+
+    def raw_count(from, count)
+      select_slice_from(from).limit(count)
+    end
+
+    def select_slice_from(time)
       @db[TIMESLOT].join(SEASON, [:show_season_id])
-                   .join(SHOW, [:show_id])
-                   .select_append { (start_time + duration).as(end_time) }
-                   .order_by      { start_time.asc }
-                   .where         { start_time + duration >= from }
-                   .and           { start_time < to }
+             .join(SHOW, [:show_id])
+             .select_append { (start_time + duration).as(end_time) }
+             .order_by      { start_time.asc }
+             .where         { start_time + duration >= time }
     end
 
     # Returns the names of the shows whose ids are in 'ids' at 'time'
