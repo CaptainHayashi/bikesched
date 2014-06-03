@@ -4,15 +4,15 @@ module Bikesched
   # An object providing a connection to the URY schedule database
   class ScheduleDatabase
     [ #  CONSTANT     SCHEMA   TABLE
-      %i{SHOW         schedule show},
-      %i{SEASON       schedule show_season},
-      %i{TIMESLOT     schedule show_season_timeslot},
+      %i(SHOW         schedule show                ),
+      %i(SEASON       schedule show_season         ),
+      %i(TIMESLOT     schedule show_season_timeslot),
 
-      %i{SHOW_TMD     schedule show_metadata},
-      %i{SEASON_TMD   schedule show_season_metadata},
-      %i{TIMESLOT_TMD schedule show_season_timeslot_metadata},
+      %i(SHOW_TMD     schedule show_metadata                ),
+      %i(SEASON_TMD   schedule show_season_metadata         ),
+      %i(TIMESLOT_TMD schedule show_season_timeslot_metadata),
 
-      %i{META_KEYS    metadata metadata_key}
+      %i(META_KEYS    metadata metadata_key)
     ].each { |id, *db_name| const_set(id, Sequel.qualify(*db_name)) }
 
     # Constructs a new ScheduleDatabase
