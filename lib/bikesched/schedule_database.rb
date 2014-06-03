@@ -54,10 +54,10 @@ module Bikesched
 
     def select_slice_from(time)
       @db[TIMESLOT].join(SEASON, [:show_season_id])
-             .join(SHOW, [:show_id])
-             .select_append { (start_time + duration).as(end_time) }
-             .order_by      { start_time.asc }
-             .where         { start_time + duration >= time }
+                   .join(SHOW, [:show_id])
+                   .select_append { (start_time + duration).as(end_time) }
+                   .order_by      { start_time.asc }
+                   .where         { start_time + duration >= time }
     end
 
     # Returns the names of the shows whose ids are in 'ids' at 'time'
