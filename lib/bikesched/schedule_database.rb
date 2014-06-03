@@ -3,17 +3,17 @@ require 'sequel'
 module Bikesched
   # An object providing a connection to the URY schedule database
   class ScheduleDatabase
-    # Schedule tables
-    SHOW     = Sequel.qualify(:schedule, :show)
-    SEASON   = Sequel.qualify(:schedule, :show_season)
-    TIMESLOT = Sequel.qualify(:schedule, :show_season_timeslot)
+    [ #  CONSTANT     SCHEMA   TABLE
+      %i{SHOW         schedule show},
+      %i{SEASON       schedule show_season},
+      %i{TIMESLOT     schedule show_season_timeslot},
 
-    # Metadata tables
-    SHOW_TMD     = Sequel.qualify(:schedule, :show_metadata)
-    SEASON_TMD   = Sequel.qualify(:schedule, :show_season_metadata)
-    TIMESLOT_TMD = Sequel.qualify(:schedule, :show_season_timeslot_metadata)
+      %i{SHOW_TMD     schedule show_metadata},
+      %i{SEASON_TMD   schedule show_season_metadata},
+      %i{TIMESLOT_TMD schedule show_season_timeslot_metadata},
 
-    META_KEYS    = Sequel.qualify(:metadata, :metadata_key)
+      %i{META_KEYS    metadata metadata_key}
+    ].each { |id, *db_name| const_set(id, Sequel.qualify(*db_name)) }
 
     # Constructs a new ScheduleDatabase
     def initialize(db)
