@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require 'bikesched'
+
+count = ARGV[0].to_i
+from  = Time.at(ARGV[1].to_i)
+
+Bikesched.print_slice_unix(Bikesched.schedule.from(from).for(count).shows)
