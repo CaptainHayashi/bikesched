@@ -14,6 +14,12 @@ module Bikesched
       @source.range(from_time, to_time)
     end
 
+    # Finds the next n shows from a Time
+    def count_range(from_time, count)
+      fail('Non-positive count.') if count < 0
+      @source.count(from_time, count)
+    end
+
     def from(time)
       ScheduleFrom.new(self, time)
     end
@@ -33,6 +39,10 @@ module Bikesched
 
     def for_seconds(duration)
       to(@from_time + duration)
+    end
+
+    def for_shows(count)
+      @schedule.count_range(@from_time, count)
     end
 
     def for(duration)
@@ -57,5 +67,10 @@ module Bikesched
       define_method(name) { @schedule_from.for_seconds(@duration * in_seconds) }
       alias_method "#{name}s".to_sym, name
     end
+
+    def show
+      @schedule_from.for_shows(@duration)
+    end
+    alias_method :shows, :show
   end
 end
